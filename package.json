@@ -1,0 +1,13 @@
+{
+  "name": "hood-u",
+  "email": "reed.br@husky.neu.edu",
+  "description": "A dataviz project for #UrbanTensions",
+  "dependencies": {
+    "deck.gl": "^4.0.2",
+    "immutable": "^3.8.1",
+    "luma.gl": "^3.0.1",
+    "react": "^15.5.3",
+    "react-dom": "^15.5.3",
+    "react-map-gl": "^1.8.2"
+  }
+}
