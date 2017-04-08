@@ -122,38 +122,6 @@
     <div id='map' style='width: 70vw; height: 100%; top: 0; box-shadow: 0px -1px 9px 0px'></div>
 </body>
 
-  <script type="text/jsx">
-    /** @jsx React.DOM */
-    var Input = React.createClass({
-        updateLabel: function(event){
-            this.setState({value: event.target.value});
-        },
-        getInitialState: function(){
-            return {
-                value: ''
-            }
-        },
-        componentWillMount: function(){
-            this.setState({value: this.state.value})
-        },
-        render: function(){
-            return (
-        )
-    }
-});
-
-var Label = React.createClass({
-    render: function(){
-        return (
-        <div class="my-label">
-        <h2>{this.props.value}</h2>
-        </div>
-        )
-    }
-});
-
-React.render(<Input/>, document.getElementById('mount-point'));
-</script>
 
 
 <script type="text/javascript">
@@ -187,16 +155,18 @@ var baseMaps = {
 
 
 function getColor(d) {
-    return d > 80 ? '#006d2c' :
-           d > 60  ? '#31a354' :
-           d > 40  ? '#74c476' :
-           d > 20  ? '#bae4b3' :
+    return d > 16 ? '#006d2c' :
+           d > 14  ? '#31a354' :
+           d > 12  ? '#74c476' :
+           d > 10  ? '#bae4b3' :
                       '#edf8e9' ;
 }
 
+var percents = [12.918032786885245, 13.017751479289942, 19.33993399339934, 13.26007326007326, 14.063926940639268, 11.609195402298852, 13.853658536585364, 13.56279069767442, 12.3855421686747, 10.715835140997832, 11.975867269984917, 13.293413173652695, 12.830523513753327, 13.82146439317954, 13.234811165845649, 12.775919732441473, 13.403141361256544, 12.048929663608563, 11.682692307692308, 12.544802867383513, 14.681238615664844, 12.777777777777777, 13.184931506849315, 12.632558139534884, 12.784905660377358, 13.985581874356335, 13.133802816901408];
+
 function style(feature) {
     return {
-        fillColor: getColor(feature.properties.Name),
+        fillColor: getColor(percents[feature.properties.OBJECTID - 1]),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -204,6 +174,7 @@ function style(feature) {
         fillOpacity: 0.7
     };
 }
+
 var geojsonLayer = new L.GeoJSON.AJAX("zips.geojson", {style: style});
 
 geojsonLayer.addTo(map);
@@ -220,10 +191,9 @@ var geojsonMarkerOptions = {
 
 function onEachFeature(feature, layer) {
     // does this feature have a property named popupContent?
-    if (feature.properties.PercentDif) {
-      console.log('test');
-
-        layer.bindPopup(feature.properties.PercentDif);
+    if (feature.properties.Name) {
+      console.log('university name sent');
+      layer.bindPopup(feature.properties.Name);
     }
 }
 
@@ -241,14 +211,14 @@ var legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 20, 40, 60, 80],
+        grades = [10, 12, 14, 16, 18],
         labels = [];
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
         div.innerHTML +=
             '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? ' &ndash; ' + grades[i + 1] + '%<br>' : '-100%');
+            grades[i] + (grades[i + 1] ? ' &ndash; ' + grades[i + 1] + '%<br>' : '% +');
     }
 
     return div;
