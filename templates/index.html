@@ -17,8 +17,17 @@
     <script src="/static/js/leaflet.ajax.min.js"></script>
 	 <script src="zips.geojson" type="text/javascript"></script>
 	 <style type="text/css">
-	 	#map { 
-             z-index: 0;
+          #mapid { height: 180px; }
+        .legend {
+        line-height: 18px;
+        color: #555;
+        }
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
         }
 
         body {
@@ -145,32 +154,81 @@ var Label = React.createClass({
 React.render(<Input/>, document.getElementById('mount-point'));
 </script>
 
+
 <script type="text/javascript">
 
 	L.mapbox.accessToken = 'pk.eyJ1IjoiYnJlZWR5MjMxIiwiYSI6ImNpdzlrd2JzaTAzc2kzMm1zaWF6bHFscmgifQ.iXjpeP1D5FQewmUcAoSbRw';
+  var mapboxAccessToken = 'pk.eyJ1IjoiYnJlZWR5MjMxIiwiYSI6ImNpdzlrd2JzaTAzc2kzMm1zaWF6bHFscmgifQ.iXjpeP1D5FQewmUcAoSbRw';
 // Add tiles from Mapbox Style API (https://www.mapbox.com/developers/api/styles/)
 // Tiles are 512x512 pixels and are offset by 1 zoom level
-var mainLayer = L.tileLayer(
-    'https://api.mapbox.com/styles/v1/breedy231/ciwhz308m009m2qmtlr7s1ymn/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYnJlZWR5MjMxIiwiYSI6ImNpdzlrd2JzaTAzc2kzMm1zaWF6bHFscmgifQ.iXjpeP1D5FQewmUcAoSbRw', {
-        
-        attribution: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom: 18
-    });
+// var mainLayer = L.tileLayer(
+//     'https://api.mapbox.com/styles/v1/breedy231/ciwhz308m009m2qmtlr7s1ymn/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYnJlZWR5MjMxIiwiYSI6ImNpdzlrd2JzaTAzc2kzMm1zaWF6bHFscmgifQ.iXjpeP1D5FQewmUcAoSbRw', {
+//
+//         attribution: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+//         maxZoom: 18
+//     });
+
 var map = L.map('map', {
   center: [42.343981, -71.070028],
   zoom: 12.65,
-  layers: [mainLayer]
+  //layers: [mainLayer]
 });
 
+
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + mapboxAccessToken, {
+    id: 'mapbox.light',
+}).addTo(map);
+
+
 var baseMaps = {
-  "Main": mainLayer
+  //Main": mainLayer
 };
 
-var geojsonLayer = new L.GeoJSON.AJAX("zips.geojson");       
+
+function getColor(d) {
+    return d > 80 ? '#006d2c' :
+           d > 60  ? '#31a354' :
+           d > 40  ? '#74c476' :
+           d > 20  ? '#bae4b3' :
+                      '#edf8e9' ;
+}
+
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.OBJECTID),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+var geojsonLayer = new L.GeoJSON.AJAX("zips.geojson", {style: style});
 geojsonLayer.addTo(map);
 
 
 L.control.layers(baseMaps).addTo(map);
+
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 20, 40, 60, 80],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? ' &ndash; ' + grades[i + 1] + '%<br>' : '-100%');
+    }
+
+    return div;
+};
+
+legend.addTo(map);
 
 
 

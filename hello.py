@@ -10,6 +10,9 @@ def index():
 def zips():
 	return app.send_static_file('zips.geojson')
 
+@app.route('/data/universities.geojson')
+def universities():
+	return app.send_static_file('data/universities.geojson')
+
 if __name__ == '__main__':
 	app.run(debug=True)
-
