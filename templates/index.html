@@ -7,6 +7,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/JSXTransformer.js"></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/v0.35.0/mapbox-gl.js'></script>
 	<link href='https://api.mapbox.com/mapbox-gl-js/v0.35.0/mapbox-gl.css' rel='stylesheet' />
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
 <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
 <script src='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js'></script>
@@ -14,26 +17,109 @@
 <script src="/static/js/leaflet.ajax.min.js"></script>
 <script src="zips.geojson" type="text/javascript"></script>
 <script src="data/universities.geojson" type="text/javascript"></script>
-
-
 	 <style type="text/css">
-	 	#mapid { height: 180px; }
-    .legend {
-    line-height: 18px;
-    color: #555;
-    }
-    .legend i {
-        width: 18px;
-        height: 18px;
-        float: left;
-        margin-right: 8px;
-        opacity: 0.7;
-    }
+          #mapid { height: 180px; }
+        .legend {
+        line-height: 18px;
+        color: #555;
+        }
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+
+        body {
+            height: 100%;
+            margin: 0 !important;
+        }
+
+        p {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12px;
+            color: #888888
+        }
+
+         h1 {
+             font-family: 'Roboto Slab', serif;
+             font-size: 64px;
+             margin: 0;
+             padding: 0;
+         }
+         h3 {
+             font-family: 'Open Sans', sans-serif;
+             font-size: 20px;
+             margin-bottom: 10px;
+             margin-top: 0;
+         }
+         #info {
+             position: absolute;
+             top: 0;
+             left: 70%;
+             height: 100%;
+             padding: 20px;
+             z-index: 100;
+             box-shadow: 10px 10px 5px #888888;
+         }
+
+         #map {
+             position: absolute;
+             z-index: 0 !important;
+         }
+
+         a {
+             text-decoration: none;
+             color: #31a354;
+         }
+
+         button {
+             background-color: #ffffff;
+             border: solid 1px #31a354;
+             border-radius: 3px;
+             color: #31a354;
+             padding: 7px;
+             transition: all 150ms;
+         }
+
+         button:hover {
+             color: #ffffff;
+             background-color: #31a354;
+         }
+
+         input {
+             padding: 5px;
+         }
+
 	 </style>
 </head>
 <body>
-     <div id="mount-point"></div>
-     <div id='map' style='width: 70vw; height: 90vh;'></div>
+    <div id="info">
+        <h1>HoodU<h1>
+        <h3>Visualizing the effects of universities on Boston</h3>
+        <p>The millions of dollars recently committed to affordable housing in Massachusetts is a response to the crisis this state is experiencing.
+            The cost of living in Massachusetts is amongst the highest in the country. Boston is one of the most rapidly gentrifying cities in the US.
+            The wait list for public housing can be up to six years.
+            Our homeless population is increasing faster than that of any other state in the country.<p>
+        <a href="https://huntnewsnu.com/2015/10/letter-northeastern-is-responsible-for-boston-gentrification/">Read more</a>
+        <br>
+        <br> <br>
+        <h3>Enter Year</h3>
+        <div>
+            <input></input>
+            <button>Submit</button>
+        </div>
+        <br>
+        <br>
+        <h3>Enter University</h3>
+        <div>
+            <input></input>
+            <button>Submit</button>
+        </div>
+
+    </div>
+    <div id='map' style='width: 70vw; height: 100%; top: 0; box-shadow: 0px -1px 9px 0px'></div>
 </body>
 
   <script type="text/jsx">
@@ -52,10 +138,6 @@
         },
         render: function(){
             return (
-                <div className="update-label">
-                      <input type="text" placeholder="Enter text" onChange={this.updateLabel}/>
-                    <Label value={this.state.value}/>
-                </div>
         )
     }
 });
