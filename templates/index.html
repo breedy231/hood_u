@@ -13,6 +13,7 @@
 <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
 <script src="/static/js/leaflet.ajax.min.js"></script>
 <script src="zips.geojson" type="text/javascript"></script>
+<script src="data/universities.geojson" type="text/javascript"></script>
 
 
 	 <style type="text/css">
@@ -113,7 +114,7 @@ function getColor(d) {
 
 function style(feature) {
     return {
-        fillColor: getColor(feature.properties.OBJECTID),
+        fillColor: getColor(feature.properties.Name),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -121,9 +122,34 @@ function style(feature) {
         fillOpacity: 0.7
     };
 }
-
 var geojsonLayer = new L.GeoJSON.AJAX("zips.geojson", {style: style});
+
 geojsonLayer.addTo(map);
+
+var geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8,
+    riseOnHover: true
+};
+
+function onEachFeature(feature, layer) {
+    // does this feature have a property named popupContent?
+    if (feature.properties.PercentDif) {
+      console.log('test');
+
+        layer.bindPopup(feature.properties.PercentDif);
+    }
+}
+
+var geojsonLayer2 = new L.GeoJSON.AJAX("data/universities.geojson", {
+    pointToLayer: function (feature, latlng) {
+        return L.marker(latlng, geojsonMarkerOptions);
+    }, onEachFeature: onEachFeature});
+geojsonLayer2.addTo(map);
 
 
 L.control.layers(baseMaps).addTo(map);
