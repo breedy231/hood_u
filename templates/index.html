@@ -17,7 +17,14 @@
     <script src="/static/js/leaflet.ajax.min.js"></script>
 	 <script src="zips.geojson" type="text/javascript"></script>
 	 <style type="text/css">
-	 	#mapid { height: 180px; }
+	 	#mapid { 
+             border-radius: 5px;
+        }
+
+        body {
+            height: 100%;
+            margin: 0 !important;
+        }
 
          h1 {
              font-family: 'Roboto Slab', serif;
@@ -48,7 +55,7 @@
         <h1>HoodU<h1>
         <h3>Visualizing the effects of universities on Boston</h3>
     </div>
-    <div id='map' style='width: 70vw; height: 90vh;'></div>
+    <div id='map' style='width: 70vw; height: 100vh; top: 0;'></div>
 </body>
 
   <script type="text/jsx">
@@ -67,10 +74,6 @@
         },
         render: function(){
             return (
-                <div className="update-label">
-                      <input type="text" placeholder="Enter text" onChange={this.updateLabel}/>
-                    <Label value={this.state.value}/>
-                </div>
         )
     }
 });
