@@ -6,8 +6,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/react.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/JSXTransformer.js"></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/v0.35.0/mapbox-gl.js'></script>
-    <script src="/static/js/app.js"></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v0.35.0/mapbox-gl.css' rel='stylesheet' />
+	<link href='https://api.mapbox.com/mapbox-gl-js/v0.35.0/mapbox-gl.css' rel='stylesheet' />
+	 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+<script src='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js'></script>
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+	 
+	 <style type="text/css">
+	 	#mapid { height: 180px; }
+	 </style>
 </head>
 <body>
      <div id="mount-point"></div>
@@ -50,12 +57,29 @@ var Label = React.createClass({
 
 React.render(<Input/>, document.getElementById('mount-point'));
 </script>
-<script>
-mapboxgl.accessToken = 'pk.eyJ1IjoiYnJlZWR5MjMxIiwiYSI6ImNqMTlnNG10NTA4dGMzOHFzYjhzaWRnNHQifQ.1hmAFLtptV3UHAkgqfoviA';
-var map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v9'
+
+<script type="text/javascript">
+
+	L.mapbox.accessToken = 'pk.eyJ1IjoiYnJlZWR5MjMxIiwiYSI6ImNpdzlrd2JzaTAzc2kzMm1zaWF6bHFscmgifQ.iXjpeP1D5FQewmUcAoSbRw';
+// Add tiles from Mapbox Style API (https://www.mapbox.com/developers/api/styles/)
+// Tiles are 512x512 pixels and are offset by 1 zoom level
+var mainLayer = L.tileLayer(
+    'https://api.mapbox.com/styles/v1/breedy231/ciwhz308m009m2qmtlr7s1ymn/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYnJlZWR5MjMxIiwiYSI6ImNpdzlrd2JzaTAzc2kzMm1zaWF6bHFscmgifQ.iXjpeP1D5FQewmUcAoSbRw', {
+        
+        attribution: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 18
+    });
+var map = L.map('map', {
+  center: [42.343981, -71.070028],
+  zoom: 12.65,
+  layers: [mainLayer]
 });
+
+var baseMaps = {
+  "Main": mainLayer
+};
+L.control.layers(baseMaps, overlayMaps).addTo(map);
+
 </script>
 
 </html>
