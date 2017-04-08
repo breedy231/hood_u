@@ -7,19 +7,48 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/JSXTransformer.js"></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/v0.35.0/mapbox-gl.js'></script>
 	<link href='https://api.mapbox.com/mapbox-gl-js/v0.35.0/mapbox-gl.css' rel='stylesheet' />
+    
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
-<script src='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js'></script>
-<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
-<script src="/static/js/leaflet.ajax.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+    <script src='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js'></script>
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+    <script src="/static/js/leaflet.ajax.min.js"></script>
 	 <script src="zips.geojson" type="text/javascript"></script>
 	 <style type="text/css">
 	 	#mapid { height: 180px; }
+
+         h1 {
+             font-family: 'Roboto Slab', serif;
+             font-size: 64px;
+             margin: 0;
+             padding: 0;
+         }
+         h3 {
+             font-family: 'Open Sans', sans-serif;
+             font-size: 20px;
+             margin-bottom: 10px;
+             margin-top: 0;
+         }
+         #info {
+             position: absolute;
+             top: 25px;
+             left: 72%;
+         }
+
+         #map {
+             position: absolute;
+             top: 25px;
+         }
 	 </style>
 </head>
 <body>
-     <div id="mount-point"></div>
-     <div id='map' style='width: 400px; height: 300px;'></div>
+    <div id="info">
+        <h1>HoodU<h1>
+        <h3>Visualizing the effects of universities on Boston</h3>
+    </div>
+    <div id='map' style='width: 70vw; height: 90vh;'></div>
 </body>
 
   <script type="text/jsx">
